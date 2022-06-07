@@ -116,6 +116,9 @@
     "friendsofphp/proxy-manager-lts": {
         "version": "v1.0.12"
     },
+    "haskel/request-param-bind-bundle": {
+        "version": "v0.2.1"
+    },
     "laminas/laminas-code": {
         "version": "4.5.1"
     },

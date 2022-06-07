@@ -25,6 +25,10 @@ class ReportController
         $event = new TurnoverPerHourEvent();
         $this->eventDispatcher->dispatch($event);
 
-        return new ReportResult($event->getRequestId(), $event->getResult());
+        return new ReportResult(
+            $event->getRequestId(),
+            $event->getResult(),
+            $event->getResult() !== null
+        );
     }
 }

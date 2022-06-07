@@ -39,10 +39,10 @@ Authorization: Bearer {{adminToken}}
 Cookie: {{cookie}}
 
 {
-  "barcode": "82374928364",
-  "name": "Chicken",
-  "price": 7.90,
-  "vatClass": 1
+  "barcode": "8237432",
+  "name": "Vegetable",
+  "price": 27.90,
+  "vatClass": 2
 }
 
 ###
@@ -57,7 +57,7 @@ Cookie: {{cookie}}
 ###
 # Get a product by barcode
 
-GET http://{{host}}:{{port}}/product/barcode:3452334545
+GET http://{{host}}:{{port}}/product/barcode:8237432
 Accept: application/json
 Authorization: Bearer {{adminToken}}
 #Authorization: Bearer {{cashRegisterToken}}
@@ -97,12 +97,12 @@ Authorization: Bearer {{cashRegisterToken}}
 Cookie: {{cookie}}
 
 {
-  "barcode": "82374928364"
+  "barcode": "8237432"
 }
 
 ###
 
-PATCH http://{{host}}:{{port}}/cash-register/receipt/{{receiptId}}/row/barcode:82374928364
+PATCH http://{{host}}:{{port}}/cash-register/receipt/{{receiptId}}/row/barcode:8237432
 Accept: application/json
 Content-Type: application/json
 #Authorization: Bearer {{adminToken}}
@@ -124,7 +124,7 @@ Authorization: Bearer {{cashRegisterToken}}
 Cookie: {{cookie}}
 
 {
-  "barcode": "5452345"
+  "barcode": "8237432"
 }
 
 ###

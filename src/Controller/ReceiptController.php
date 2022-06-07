@@ -7,11 +7,11 @@ namespace App\Controller;
 use App\Dto\Receipt;
 use App\Enum\ReceiptAction;
 use App\Enum\ReceiptPatchAction;
-use App\Exception\InvalidArgumentException;
 use App\Exception\UnexpectedValueException;
 use App\Service\Idempotency\Attribute\IdempotentRequest;
 use App\Service\Product\Identifier\ProductCompositeId;
 use App\Service\Receipt\ReceiptService;
+use Haskel\RequestParamBindBundle\Attribute\FromBody;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\Routing\Annotation\Route;
@@ -24,7 +24,7 @@ class ReceiptController
     {
     }
 
-    #[Route(methods: Request::METHOD_POST)]
+    #[Route('', methods: Request::METHOD_POST)]
     public function create(): Receipt
     {
         return $this->receiptService->create();
@@ -37,11 +37,9 @@ class ReceiptController
     }
 
     #[Route('/{receiptId}', methods: Request::METHOD_PUT)]
-    public function update(int $receiptId, Request $request): Receipt
+    public function update(int $receiptId, #[FromBody] ReceiptAction $action): Receipt
     {
-        $action = $request->request->get('action');
-
-        if ($action === ReceiptAction::Finish->value) {
+        if ($action === ReceiptAction::Finish) {
             return $this->receiptService->finish($receiptId);
         }
 
@@ -49,12 +47,13 @@ class ReceiptController
     }
 
     #[IdempotentRequest]
-    #[Route('/{receiptId}/row/{barcode}', methods: Request::METHOD_PATCH)]
-    public function changeProductAmount(int $receiptId, string $barcode, Request $request): Receipt
-    {
-        $productId = ProductCompositeId::fromBarcode($barcode);
-
-        $action = ReceiptPatchAction::tryFrom($request->request->getAlnum('action'));
+    #[Route('/{receiptId}/row/{productId}', methods: Request::METHOD_PATCH)]
+    public function changeProductAmount(
+        int $receiptId,
+        string $productId,
+        #[FromBody] ReceiptPatchAction $action
+    ): Receipt {
+        $productId = new ProductCompositeId($productId);
 
         return match ($action) {
             ReceiptPatchAction::IncrementRow => $this->receiptService->addProduct($receiptId, $productId),
@@ -65,36 +64,21 @@ class ReceiptController
 
     #[IdempotentRequest]
     #[Route('/{receiptId}/row', methods: Request::METHOD_PUT)]
-    public function addProduct(int $receiptId, Request $request): Receipt
+    public function addProduct(int $receiptId, #[FromBody] string $barcode): Receipt
     {
-        $barcode = $request->request->getAlnum('barcode');
-        if ('' === trim($barcode)) {
-            throw new InvalidArgumentException('Barcode can not empty');
-        }
-
         return $this->receiptService->addProduct($receiptId, ProductCompositeId::fromBarcode($barcode));
     }
 
     #[IdempotentRequest]
     #[Route('/{receiptId}/row', methods: Request::METHOD_DELETE)]
-    public function removeProduct(int $receiptId, Request $request): Receipt
+    public function removeProduct(int $receiptId, #[FromBody] string $barcode): Receipt
     {
-        $barcode = $request->request->getAlnum('barcode');
-        if ('' === trim($barcode)) {
-            throw new InvalidArgumentException('Barcode can not empty');
-        }
-
         return $this->receiptService->removeProduct($receiptId, ProductCompositeId::fromBarcode($barcode));
     }
 
     #[Route('/{receiptId}/row/last', methods: Request::METHOD_PUT)]
-    public function updateLastRowAmount(int $receiptId, Request $request): Receipt
+    public function updateLastRowAmount(int $receiptId, #[FromBody] int $amount): Receipt
     {
-        $amount = $request->request->getInt('amount');
-        if ($amount < 0) {
-            throw new InvalidArgumentException('Amount must be greater or equal 0');
-        }
-
         return $this->receiptService->updateLastRowAmount($receiptId, $amount);
     }
 }

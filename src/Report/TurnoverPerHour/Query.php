@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace App\Report\TurnoverPerHour;
 
-use App\Constant\PostgresDateFormat;
 use App\Enum\ReceiptStatus;
-use DateTimeImmutable;
 use Doctrine\DBAL\Connection;
 
 class Query
@@ -19,7 +17,7 @@ class Query
      * @return array<array<string, string|float>>
      * @throws \Doctrine\DBAL\Exception
      */
-    public function execute(DateTimeImmutable $startDate): array
+    public function execute(): array
     {
         return $this->connection->fetchAllAssociative(
             "
@@ -36,7 +34,6 @@ class Query
         ",
             [
                 'finishStatus' => ReceiptStatus::Finished->value,
-//                'startDate' => $startDate->format(PostgresDateFormat::DATETIME),
             ]
         );
     }

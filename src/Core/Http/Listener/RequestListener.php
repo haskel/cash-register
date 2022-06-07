@@ -9,8 +9,6 @@ use Symfony\Component\HttpKernel\Event\RequestEvent;
 use JsonException;
 use Symfony\Component\HttpKernel\KernelEvents;
 
-use function _PHPStan_3a7a22dbd\RingCentral\Psr7\str;
-
 #[AsEventListener(event: KernelEvents::REQUEST, method: 'onKernelRequest', priority: 100)]
 class RequestListener
 {

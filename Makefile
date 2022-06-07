@@ -29,6 +29,10 @@ up:
 down:
 	@docker-compose -f docker-compose.$(env).yml down
 
+# Database migrations
+migrate:
+	@docker exec -e XDEBUG_MODE=off $(php_docker_service_container_prefix).dev php /var/www/app/bin/console doctrine:migrations:migrate --no-interaction
+
 
 # Tests
 run-tests:
@@ -37,8 +41,7 @@ run-tests:
 run-tests-debug:
 	@docker exec -e APP_ENV=test $(php_docker_service_container) php /var/www/app/bin/phpunit --no-coverage /var/www/app/tests
 
-test:
-	@run-tests
+test: run-tests
 
 # Run terminal in containers
 php-console-zsh:

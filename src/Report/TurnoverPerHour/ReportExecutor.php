@@ -16,7 +16,7 @@ class ReportExecutor
 
     public function onReportRequest(TurnoverPerHourEvent $event): void
     {
-        $items = $this->query->execute(new DateTimeImmutable());
+        $items = $this->query->execute();
 
         $products = [];
         $sum = 0;

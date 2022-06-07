@@ -188,7 +188,7 @@ class ReceiptService
             $row->setPrice($product->getPrice());
             $row->setVatClass($product->getVatClass());
             $row->setVatPercent($this->vatCalculator->getPercentByClass($product->getVatClass()));
-            $row->setVatAmount($this->vatCalculator->calculate($product));
+            $row->setVatAmount($this->vatCalculator->calculate($product) * $row->getAmount());
         }
 
         $errorsList = $this->validator->validate($receipt);

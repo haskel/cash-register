@@ -24,7 +24,6 @@ class Product
     private int $id;
 
     #[NotBlank]
-    #[Unique]
     #[Column(type: Types::STRING, length: 1024, unique: true, nullable: false)]
     private string $barcode;
 
@@ -33,7 +32,7 @@ class Product
     private string $name;
 
     #[PositiveOrZero]
-    #[Column(type: Types::DECIMAL, precision: 10, scale: 2)]
+    #[Column(type: Types::DECIMAL, precision: 12, scale: 2)]
     private string $price;
 
     #[ValidVatClass]

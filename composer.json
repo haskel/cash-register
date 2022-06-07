@@ -10,6 +10,7 @@
         "doctrine/doctrine-bundle": "^2.6",
         "doctrine/doctrine-migrations-bundle": "^3.2",
         "doctrine/orm": "^2.12",
+        "haskel/request-param-bind-bundle": "~0.2",
         "lexik/jwt-authentication-bundle": "^2.15",
         "symfony/console": "*",
         "symfony/dotenv": "*",

@@ -50,7 +50,7 @@ class ReceiptRow
     private string $productName;
 
     #[PositiveOrZero]
-    #[Column(type: Types::DECIMAL, precision: 10, scale: 2)]
+    #[Column(type: Types::DECIMAL, precision: 12, scale: 2)]
     private string $price;
 
     #[ValidVatClass]
@@ -58,11 +58,11 @@ class ReceiptRow
     private int $vatClass;
 
     #[Range(notInRangeMessage: 'The percent should be between {{  min }} and {{ max }}', min: 0, max: 100)]
-    #[Column(type: Types::DECIMAL, precision: 3, scale: 2, nullable: false, options: ['default' => 0])]
+    #[Column(type: Types::DECIMAL, precision: 5, scale: 2, nullable: false, options: ['default' => 0])]
     private string $vatPercent;
 
     #[PositiveOrZero]
-    #[Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: false, options: ['default' => 0])]
+    #[Column(type: Types::DECIMAL, precision: 12, scale: 2, nullable: false, options: ['default' => 0])]
     private string $vatAmount;
 
     #[Positive]

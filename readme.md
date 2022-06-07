@@ -25,9 +25,14 @@ $ make down env=dev
 ```
 
 ### Generate keys for JWT
-Run the command 
+#### Run the command 
 ```bash
 $ bin/console lexik:jwt:generate-keypair
+```
+
+### Run migrations
+```bash
+$ make migrate
 ```
 
 ### Users
@@ -42,7 +47,7 @@ The second argument is a user of the device. The username from the `Users` secti
 The third argument is an optional name.
 
 ### HTTP requests
-There is a `doc/requests.http` file which contains all requests you need to check.
+There is a `doc/requests.http` file which contains all requests you need.
 File `doc/http-client.env.json` contains environment variables. 
 Open it in PhpStorm (https://www.jetbrains.com/help/phpstorm/http-client-in-product-code-editor.html).
 
@@ -64,41 +69,26 @@ Use request from `REPORT` section of `requests.http` file.
 It summarizes the receipts finished in the current hour.
 
 ### Tests
-To run tests use the following command:
+#### To run tests use the following command:
 ```
 make test
 ```
-This command starts `php` and `mysql` containers and then runs tests.
-
-If your containers are already up you can run `make run-tests` command.
-
-To open php container's console run
-#### zsh
-```
-make php-console-zsh env=test
-```
-or
-#### bash
-```
-make php-console-bash env=test
-```
-
 
 ### Static analysis
-Run psalm
+#### Run psalm
 ```
 make psalm
 ```
-or inside the container
+#### or inside the container
 ```
 vendor/bin/psalm
 ```
 
-Run phpstan
+#### Run phpstan
 ```
 make phpstan
 ```
-or inside the container
+#### or inside the container
 ```
 vendor/bin/pstan
 ```
