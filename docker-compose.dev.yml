@@ -1,0 +1,45 @@
+version: '3.9'
+
+services:
+  php:
+    build:
+      context: ./docker/dev/php
+      args:
+        TIMEZONE: ${TIMEZONE:-UTC}
+    container_name: service.cash-register.php.dev
+    environment:
+      APP_ENV: "dev"
+      DATABASE_HOST: "127.0.0.1"
+      DATABASE_USER: "user"
+      DATABASE_PASSWORD: "pass"
+      DATABASE_NAME: "app"
+      PHP_IDE_CONFIG: "serverName=docker"
+    expose:
+      - ${XDEBUG_PORT:-9003}
+    ports:
+      - "${APP_HTTP_PORT:-8001}:8001"
+    volumes:
+      - ./:/var/www/app
+    networks:
+      - cash-register-docker-network
+
+  db:
+    container_name: service.cash-register.db.dev
+    image: postgres:${POSTGRES_VERSION:-13}-alpine
+    restart: always
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-app}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-pass}
+      POSTGRES_USER: ${POSTGRES_USER:-user}
+    ports:
+      - "54321:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data:rw
+    networks:
+      - cash-register-docker-network
+
+volumes:
+  db_data: {}
+
+networks:
+  cash-register-docker-network:

@@ -1,0 +1,28 @@
+parameters:
+    app.vat_class:
+        1: 0
+        2: 21
+        3: 6
+
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+
+    App\:
+        resource: '../src/'
+        exclude:
+            - '../src/DependencyInjection/'
+            - '../src/Entity/'
+            - '../src/Kernel.php'
+
+#    App\Core\Http\Listener\ResponseListener:
+#        arguments:
+#            $env: '%env(APP_ENV)%'
+#        tags:
+#            - { name: 'kernel.event_listener', event: 'kernel.exception' }
+#            - { name: 'kernel.event_listener', event: 'kernel.view' }
+#
+#    App\Core\Http\Listener\RequestListener:
+#        tags:
+#            - { name: 'kernel.event_listener', event: 'kernel.request', method: 'onKernelRequest', priority: 100 }

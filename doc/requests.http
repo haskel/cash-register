@@ -1,0 +1,184 @@
+##########
+#  Auth  #
+##########
+
+# Obtain a token for Admin user
+
+POST http://{{host}}:{{port}}/api/login_check
+Accept: application/json
+Content-Type: application/json
+
+{
+  "username":"admin",
+  "password":"admin"
+}
+
+###
+
+# Obtain a token for Cash Register user
+
+POST http://{{host}}:{{port}}/api/login_check
+Accept: application/json
+Content-Type: application/json
+
+{
+  "username":"user",
+  "password":"pass"
+}
+
+#############
+#  PRODUCT  #
+#############
+
+# Create a products
+
+POST http://{{host}}:{{port}}/product
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+Cookie: {{cookie}}
+
+{
+  "barcode": "82374928364",
+  "name": "Chicken",
+  "price": 7.90,
+  "vatClass": 1
+}
+
+###
+# List of products
+
+GET http://{{host}}:{{port}}/product
+Accept: application/json
+Authorization: Bearer {{adminToken}}
+#Authorization: Bearer {{cashRegisterToken}}
+Cookie: {{cookie}}
+
+###
+# Get a product by barcode
+
+GET http://{{host}}:{{port}}/product/barcode:3452334545
+Accept: application/json
+Authorization: Bearer {{adminToken}}
+#Authorization: Bearer {{cashRegisterToken}}
+Cookie: {{cookie}}
+
+#############
+#  RECEIPT  #
+#############
+
+###
+# Create a receipt
+
+POST http://{{host}}:{{port}}/cash-register/receipt
+Accept: application/json
+Content-Type: application/json
+#Authorization: Bearer {{adminToken}}
+Authorization: Bearer {{cashRegisterToken}}
+Cookie: {{cookie}}
+
+###
+# Get a receipt by id
+
+GET http://{{host}}:{{port}}/cash-register/receipt/{{receiptId}}
+Accept: application/json
+#Authorization: Bearer {{adminToken}}
+Authorization: Bearer {{cashRegisterToken}}
+Cookie: {{cookie}}
+
+###
+# Add the product to the receipt by barcode
+
+PUT http://{{host}}:{{port}}/cash-register/receipt/{{receiptId}}/row
+Accept: application/json
+Content-Type: application/json
+#Authorization: Bearer {{adminToken}}
+Authorization: Bearer {{cashRegisterToken}}
+Cookie: {{cookie}}
+
+{
+  "barcode": "82374928364"
+}
+
+###
+
+PATCH http://{{host}}:{{port}}/cash-register/receipt/{{receiptId}}/row/barcode:82374928364
+Accept: application/json
+Content-Type: application/json
+#Authorization: Bearer {{adminToken}}
+Authorization: Bearer {{cashRegisterToken}}
+Cookie: {{cookie}}
+
+{
+  "action": "incrementAmount"
+}
+
+###
+# Remove a product from the receipt by barcode
+
+DELETE http://{{host}}:{{port}}/cash-register/receipt/{{receiptId}}/row
+Accept: application/json
+Content-Type: application/json
+#Authorization: Bearer {{adminToken}}
+Authorization: Bearer {{cashRegisterToken}}
+Cookie: {{cookie}}
+
+{
+  "barcode": "5452345"
+}
+
+###
+
+PATCH http://{{host}}:{{port}}/cash-register/receipt/{{receiptId}}/row/barcode:82374928364
+Accept: application/json
+Content-Type: application/json
+#Authorization: Bearer {{adminToken}}
+Authorization: Bearer {{cashRegisterToken}}
+Cookie: {{cookie}}
+
+{
+  "action": "decrementAmount"
+}
+
+
+###
+# Update last row amount in the receipt
+
+PUT http://{{host}}:{{port}}/cash-register/receipt/{{receiptId}}/row/last
+Accept: application/json
+Content-Type: application/json
+#Authorization: Bearer {{adminToken}}
+Authorization: Bearer {{cashRegisterToken}}
+Cookie: {{cookie}}
+
+{
+  "amount": 11
+}
+
+###
+# Finish the receipt
+
+PUT http://{{host}}:{{port}}/cash-register/receipt/{{receiptId}}
+Accept: application/json
+Content-Type: application/json
+#Authorization: Bearer {{adminToken}}
+Authorization: Bearer {{cashRegisterToken}}
+Cookie: {{cookie}}
+
+{
+  "action": "finish"
+}
+
+############
+#  REPORT  #
+############
+
+###
+# Get turnover per hour
+
+GET http://{{host}}:{{port}}/report/total-turnover-per-hour
+Accept: application/json
+Authorization: Bearer {{adminToken}}
+#Authorization: Bearer {{cashRegisterToken}}
+Cookie: {{cookie}}
+

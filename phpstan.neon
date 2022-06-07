@@ -1,0 +1,11 @@
+parameters:
+    level: 8
+    parallel:
+        jobSize: 4
+        maximumNumberOfProcesses: 8
+        minimumNumberOfJobsPerProcess: 2
+    doctrine:
+        objectManagerLoader: tests/object-manager.php
+    paths:
+        - src
+        - tests
